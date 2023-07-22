@@ -38,8 +38,18 @@ public class MetaLiteEngine {
             new CreateDatabase().createDatabase(code , this);
         }
         else if (code.startsWith("insert into ")) {
-            // insert into hello test_value set(a=1,b=2,c="hello world")
+            // insert into hello test_value a=1,b=2,c="hello world"
             new Insert().insert(code , this);
+        }
+        else if (code.startsWith("view ")) {
+            String db = code.substring(5);
+            Map<String, Object> hashMap = readHashMapFromFile(this.select_dir+"/"+db+".mdb");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String key : hashMap.keySet()) {
+                stringBuilder.append(key);
+                stringBuilder.append("\n");
+            }
+            this.RunMessage = stringBuilder.toString();
         }
         else if (code.equals("show databases")) {
             File[] listDir = new File(this.select_dir).listFiles();
