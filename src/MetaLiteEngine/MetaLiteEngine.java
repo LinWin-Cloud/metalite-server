@@ -78,6 +78,9 @@ public class MetaLiteEngine {
         else if (code.startsWith("get ")) {
             new Get().get(code,this);
         }
+        else if (code.startsWith("delete data ")) {
+
+        }
         else {
             this.RunMessage = "script error";
         }
