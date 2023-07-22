@@ -1,5 +1,6 @@
 package main;
 
+import MetaLiteEngine.MetaLiteEngine;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -40,6 +41,25 @@ public class Main {
                         String username = token[1];
                         String password = token[2];
                         String commands = token[3];
+
+                        try {
+                             MetaLiteEngine metaLiteEngine = new MetaLiteEngine();
+                             metaLiteEngine.setPassword(password);
+                             metaLiteEngine.setUserName(username);
+                             metaLiteEngine.exec(commands);
+
+                            String response = metaLiteEngine.getRunMessage();
+                            exchange.sendResponseHeaders(200, response.length());
+                            OutputStream outputStream = exchange.getResponseBody();
+                            outputStream.write(response.getBytes());
+                            outputStream.close();
+                        }catch (Exception exception) {
+                            String response = exception.getMessage();
+                            exchange.sendResponseHeaders(500, response.length());
+                            OutputStream outputStream = exchange.getResponseBody();
+                            outputStream.write(response.getBytes());
+                            outputStream.close();
+                        }
 
                     }catch (Exception exception) {
                         String response = "client message error";
