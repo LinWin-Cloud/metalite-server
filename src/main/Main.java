@@ -14,6 +14,7 @@ import java.util.Map;
 
 public class Main {
     public static Map<String , Object> config;
+    public static String database_dir = "../database/";
     public static void main(String[] args) {
         try {
             /*
@@ -34,25 +35,34 @@ public class Main {
                 public void handle(HttpExchange exchange) throws IOException {
                     // 处理请求
 
-                    String getRequestsUrl = exchange.getRequestURI().toString();
+                    String getRequestsUrl = java.net.URLDecoder.decode(exchange.getRequestURI().toString() , "UTF-8");
                     String[] token = getRequestsUrl.split("/");
 
                     try {
                         String username = token[1];
                         String password = token[2];
-                        String commands = token[3];
+                        String commands = getRequestsUrl.substring(getRequestsUrl.indexOf(username+"/" + password+"/"));
 
                         try {
                              MetaLiteEngine metaLiteEngine = new MetaLiteEngine();
                              metaLiteEngine.setPassword(password);
                              metaLiteEngine.setUserName(username);
-                             metaLiteEngine.exec(commands);
 
-                            String response = metaLiteEngine.getRunMessage();
-                            exchange.sendResponseHeaders(200, response.length());
-                            OutputStream outputStream = exchange.getResponseBody();
-                            outputStream.write(response.getBytes());
-                            outputStream.close();
+                             if (metaLiteEngine.login()) {
+                                 metaLiteEngine.exec(commands);
+                                 String response = metaLiteEngine.getRunMessage();
+                                 exchange.sendResponseHeaders(200, response.length());
+                                 OutputStream outputStream = exchange.getResponseBody();
+                                 outputStream.write(response.getBytes());
+                                 outputStream.close();
+                             }
+                             else {
+                                 String response = "password or username error";
+                                 exchange.sendResponseHeaders(200, response.length());
+                                 OutputStream outputStream = exchange.getResponseBody();
+                                 outputStream.write(response.getBytes());
+                                 outputStream.close();
+                             }
                         }catch (Exception exception) {
                             String response = exception.getMessage();
                             exchange.sendResponseHeaders(500, response.length());
