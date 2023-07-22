@@ -13,6 +13,16 @@ public class SelectDB {
         File target = new File(metaLiteEngine.select_dir+"/"+db+".mdb");
         if (target.isFile()) {
             Map<String , Object> objectsHashMap = metaLiteEngine.readHashMapFromFile(target.getAbsolutePath());
+            StringBuilder stringBuffer = new StringBuilder();
+            for (Map.Entry<String, Object> entry : objectsHashMap.entrySet()) {
+                String key = entry.getKey();
+
+                // 匹配键
+                if (key.matches(regex)) {
+                    stringBuffer.append(key);
+                }
+            }
+            metaLiteEngine.RunMessage = stringBuffer.toString();
         }else {
             throw new RuntimeException("can not connect to target database");
         }

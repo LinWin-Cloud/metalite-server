@@ -41,7 +41,7 @@ public class Main {
                     try {
                         String username = token[1];
                         String password = token[2];
-                        String commands = getRequestsUrl.substring(getRequestsUrl.indexOf(username+"/" + password+"/"));
+                        String commands = getRequestsUrl.substring(getRequestsUrl.indexOf(username+"/" + password+"/")+(username+"/" + password+"/").length());
 
                         try {
                              MetaLiteEngine metaLiteEngine = new MetaLiteEngine();

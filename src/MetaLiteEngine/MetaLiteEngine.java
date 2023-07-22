@@ -11,7 +11,7 @@ public class MetaLiteEngine {
     private String username;
     private String password;
     public String select_dir;
-    private String RunMessage = "";
+    public String RunMessage = "";
     public void setUserName(String userName) {
         this.username = userName;
     }
@@ -30,9 +30,15 @@ public class MetaLiteEngine {
         if (code.isEmpty()) {
             throw new Exception("message empty");
         }
-        if (token[0].equals("select")) {
+        else if (token[0].equals("select")) {
             // select [""] from main
             new SelectDB().select(code , this);
+        }
+        else if (code.startsWith("create database ")) {
+            new CreateDatabase().createDatabase(code , this);
+        }
+        else {
+            this.RunMessage = "script error";
         }
     }
 
