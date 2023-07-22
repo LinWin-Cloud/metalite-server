@@ -5,7 +5,6 @@ import main.Main;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class MetaLiteEngine {
     private String username;
@@ -35,7 +34,23 @@ public class MetaLiteEngine {
             new SelectDB().select(code , this);
         }
         else if (code.startsWith("create database ")) {
+            // create database hello
             new CreateDatabase().createDatabase(code , this);
+        }
+        else if (code.startsWith("insert into ")) {
+            // insert into hello test_value set(a=1,b=2,c="hello world")
+            new Insert().insert(code , this);
+        }
+        else if (code.equals("show databases")) {
+            File[] listDir = new File(this.select_dir).listFiles();
+            StringBuilder stringBuilder = new StringBuilder();
+            for (File file : listDir) {
+                String name = this.getLastName(file.getName());
+                if (name.equals(".mdb")) {
+                    stringBuilder.append(file.getName().substring(0,file.getName().lastIndexOf(".")));
+                }
+            }
+            this.RunMessage = stringBuilder.toString();
         }
         else {
             this.RunMessage = "script error";
@@ -44,6 +59,14 @@ public class MetaLiteEngine {
 
     public String getRunMessage() {
         return this.RunMessage;
+    }
+
+    public String getLastName(String name) {
+        try {
+            return name.substring(name.lastIndexOf("."));
+        }catch (Exception exception) {
+            return name;
+        }
     }
 
 
