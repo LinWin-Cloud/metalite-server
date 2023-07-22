@@ -1,6 +1,7 @@
 package MetaLiteEngine;
 
 import main.Main;
+import sun.security.provider.SHA;
 
 import java.io.*;
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class MetaLiteEngine {
             // insert into hello test_value a=1,b=2,c="hello world"
             new Insert().insert(code , this);
         }
-        else if (code.startsWith("view ")) {
+        else if (code.startsWith("list ")) {
             String db = code.substring(5);
             Map<String, Object> hashMap = readHashMapFromFile(this.select_dir+"/"+db+".mdb");
             StringBuilder stringBuilder = new StringBuilder();
@@ -61,6 +62,21 @@ public class MetaLiteEngine {
                 }
             }
             this.RunMessage = stringBuilder.toString();
+        }
+        else if (code.startsWith("drop ")) {
+            File target = new File(this.select_dir+"/"+code.substring(5)+".mdb");
+            if (target.delete()) {
+                this.RunMessage = "delete database successful";
+            }else {
+                this.RunMessage = "delete database error";
+            }
+        }
+        else if (code.startsWith("show ")) {
+            //show student from db
+            new Show().show(code,this);
+        }
+        else if (code.startsWith("get ")) {
+            new Get().get(code,this);
         }
         else {
             this.RunMessage = "script error";
