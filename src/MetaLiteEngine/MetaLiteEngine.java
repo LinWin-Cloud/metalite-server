@@ -88,8 +88,13 @@ public class MetaLiteEngine {
             // delete data a from db
             new DeleteData().deleteData(code , this);
         }
-        else if (code.startsWith("delete key")) {
-
+        else if (code.startsWith("delete key ")) {
+            // delete key test_value.key1 from db
+            new DeleteKey().deleteKey(code , this);
+        }
+        else if (code.startsWith("update key ")) {
+            // update key test_value.key1=114514 from db
+            new UpdateKey().updateKey(code , this);
         }
         else {
             this.RunMessage = "script error";

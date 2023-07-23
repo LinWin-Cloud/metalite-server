@@ -57,7 +57,7 @@ public class Main {
                                      outputStream.write(response.getBytes());
                                      outputStream.close();
                                  }catch (Exception exception) {
-                                     String response = "script runtime error";
+                                     String response = exception.getMessage();
                                      exchange.sendResponseHeaders(500, response.length());
                                      OutputStream outputStream = exchange.getResponseBody();
                                      outputStream.write(response.getBytes());
