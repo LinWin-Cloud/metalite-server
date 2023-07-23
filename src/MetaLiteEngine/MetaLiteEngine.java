@@ -6,6 +6,7 @@ import sun.security.provider.SHA;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class MetaLiteEngine {
     private String username;
@@ -96,8 +97,23 @@ public class MetaLiteEngine {
             // update key test_value.key1=114514 from db
             new UpdateKey().updateKey(code , this);
         }
+        else if (code.startsWith("index ")) {
+            // index db
+            String indexDB = code.substring(6).trim();
+            StringBuilder stringBuilder = new StringBuilder();
+
+            for (File file : Objects.requireNonNull(new File(this.select_dir).listFiles()))
+            {
+                if (this.getLastName(file.getName()).equals(".mdb")
+                && this.getName(file.getName()).contains(indexDB)) {
+                    stringBuilder.append(this.getName(file.getName()));
+                    continue;
+                }
+            }
+            this.RunMessage = stringBuilder.toString();
+        }
         else {
-            this.RunMessage = "script error";
+            throw new Exception("script error");
         }
     }
 
@@ -113,6 +129,13 @@ public class MetaLiteEngine {
         }
     }
 
+    public String getName(String name)  {
+        try {
+            return name.substring(0,name.lastIndexOf("."));
+        }catch (Exception exception) {
+            return name;
+        }
+    }
 
     // 写入HashMap到文件
     public void writeHashMapToFile(Map<String, Object> hashMap, String filename) throws Exception {
