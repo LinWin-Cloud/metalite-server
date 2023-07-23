@@ -40,7 +40,7 @@ public class MetaLiteEngine {
         }
         else if (code.startsWith("create key")) {
             // create key a=1,b=2,c=3 to db.test_value
-
+            new CreateKey().createKey(code , this);
         }
         else if (code.startsWith("insert into ")) {
             // insert into hello test_value a=1,b=2,c="hello world"
@@ -63,6 +63,7 @@ public class MetaLiteEngine {
                 String name = this.getLastName(file.getName());
                 if (name.equals(".mdb")) {
                     stringBuilder.append(file.getName().substring(0,file.getName().lastIndexOf(".")));
+                    stringBuilder.append("\n");
                 }
             }
             this.RunMessage = stringBuilder.toString();
@@ -106,21 +107,25 @@ public class MetaLiteEngine {
 
 
     // 写入HashMap到文件
-    public void writeHashMapToFile(Map<String, Object> hashMap, String filename) {
+    public void writeHashMapToFile(Map<String, Object> hashMap, String filename) throws Exception {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
             outputStream.writeObject(hashMap);
         } catch (IOException e) {
             e.printStackTrace();
+            throw new Exception(e.getMessage());
+            //e.printStackTrace();
         }
     }
 
     // 从文件中读取HashMap
-    public Map<String, Object> readHashMapFromFile(String filename) {
+    public Map<String, Object> readHashMapFromFile(String filename) throws Exception {
         Map<String, Object> hashMap = new HashMap<>();
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
             hashMap = (Map<String, Object>) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+            throw new Exception(e.getMessage());
+            //e.printStackTrace();
         }
         return hashMap;
     }

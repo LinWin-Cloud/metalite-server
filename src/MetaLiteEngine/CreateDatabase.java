@@ -1,6 +1,10 @@
 package MetaLiteEngine;
 
+import main.Main;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateDatabase {
     public void createDatabase(String code ,MetaLiteEngine metaLiteEngine) throws Exception
@@ -13,6 +17,8 @@ public class CreateDatabase {
         }
         else {
             if (create.createNewFile()) {
+                Map<String , Object> map = new HashMap<>();
+                metaLiteEngine.writeHashMapToFile(map , create.getAbsolutePath());
                 metaLiteEngine.RunMessage = "create successful";
             }else {
                 metaLiteEngine.RunMessage = "create error";

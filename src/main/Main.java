@@ -49,12 +49,20 @@ public class Main {
                              metaLiteEngine.setUserName(username);
 
                              if (metaLiteEngine.login()) {
-                                 metaLiteEngine.exec(commands);
-                                 String response = metaLiteEngine.getRunMessage();
-                                 exchange.sendResponseHeaders(200, response.length());
-                                 OutputStream outputStream = exchange.getResponseBody();
-                                 outputStream.write(response.getBytes());
-                                 outputStream.close();
+                                 try {
+                                     metaLiteEngine.exec(commands);
+                                     String response = metaLiteEngine.getRunMessage();
+                                     exchange.sendResponseHeaders(200, response.length());
+                                     OutputStream outputStream = exchange.getResponseBody();
+                                     outputStream.write(response.getBytes());
+                                     outputStream.close();
+                                 }catch (Exception exception) {
+                                     String response = "script runtime error";
+                                     exchange.sendResponseHeaders(500, response.length());
+                                     OutputStream outputStream = exchange.getResponseBody();
+                                     outputStream.write(response.getBytes());
+                                     outputStream.close();
+                                 }
                              }
                              else {
                                  String response = "password or username error";
