@@ -38,6 +38,10 @@ public class MetaLiteEngine {
             // create database hello
             new CreateDatabase().createDatabase(code , this);
         }
+        else if (code.startsWith("create key")) {
+            // create key a=1,b=2,c=3 to db.test_value
+
+        }
         else if (code.startsWith("insert into ")) {
             // insert into hello test_value a=1,b=2,c="hello world"
             new Insert().insert(code , this);
@@ -76,10 +80,12 @@ public class MetaLiteEngine {
             new Show().show(code,this);
         }
         else if (code.startsWith("get ")) {
+            // get student.age from db
             new Get().get(code,this);
         }
         else if (code.startsWith("delete data ")) {
-
+            // delete data a from db
+            new DeleteData().deleteData(code , this);
         }
         else {
             this.RunMessage = "script error";
