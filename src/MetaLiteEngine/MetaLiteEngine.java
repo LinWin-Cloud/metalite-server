@@ -1,8 +1,6 @@
 package MetaLiteEngine;
 
 import main.Main;
-import sun.security.provider.SHA;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,14 +34,17 @@ public class MetaLiteEngine {
             new SelectDB().select(code , this);
         }
         else if (code.startsWith("create database ")) {
+            AllowWriteData();
             // create database hello
             new CreateDatabase().createDatabase(code , this);
         }
         else if (code.startsWith("create key")) {
+            AllowWriteData();
             // create key a=1,b=2,c=3 to db.test_value
             new CreateKey().createKey(code , this);
         }
         else if (code.startsWith("insert into ")) {
+            AllowWriteData();
             // insert into hello test_value a=1,b=2,c="hello world"
             new Insert().insert(code , this);
         }
@@ -95,6 +96,7 @@ public class MetaLiteEngine {
         }
         else if (code.startsWith("update key ")) {
             // update key test_value.key1=114514 from db
+            AllowWriteData();
             new UpdateKey().updateKey(code , this);
         }
         else if (code.startsWith("index ")) {
@@ -107,6 +109,7 @@ public class MetaLiteEngine {
                 if (this.getLastName(file.getName()).equals(".mdb")
                 && this.getName(file.getName()).contains(indexDB)) {
                     stringBuilder.append(this.getName(file.getName()));
+                    stringBuilder.append("\n");
                     continue;
                 }
             }
@@ -114,6 +117,25 @@ public class MetaLiteEngine {
         }
         else {
             throw new Exception("script error");
+        }
+    }
+    public void AllowWriteData() throws Exception {
+        try {
+            Map<String,Object> hashMap = readJMap(this.select_dir+"/../info.jmap");
+            int allow_size = (int) hashMap.get("max_size");
+            int database_size = (int) calculateFolderSize(new File(this.select_dir));
+
+            if (database_size >= allow_size) {
+                throw new Exception("can not write more data to the database");
+            }
+        }catch (Exception exception) {
+            //exception.printStackTrace();
+            if (exception.getMessage().equals("can not write more data to the database"))
+            {
+                throw new Exception("can not write more data to the database");
+            }else {
+                throw new Exception("user config error");
+            }
         }
     }
 
@@ -142,7 +164,7 @@ public class MetaLiteEngine {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
             outputStream.writeObject(hashMap);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new Exception(e.getMessage());
             //e.printStackTrace();
         }
@@ -154,10 +176,59 @@ public class MetaLiteEngine {
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
             hashMap = (Map<String, Object>) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new Exception(e.getMessage());
             //e.printStackTrace();
         }
         return hashMap;
+    }
+
+    public static long calculateFolderSize(File folder) {
+        long size = 0;
+        if (folder.isDirectory()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile()) {
+                        size += file.length();
+                    } else {
+                        size += calculateFolderSize(file);
+                    }
+                }
+            }
+        } else {
+            size = folder.length();
+        }
+        return size;
+    }
+
+    private static Map<String, Object> readJMap(String filename) {
+        Map<String, Object> hashMap = new HashMap<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("=");
+                if (parts.length == 2) {
+                    String key = parts[0];
+                    String value = parts[1];
+                    hashMap.put(key, parseValue(value));
+                }
+            }
+            //System.out.println("HashMap has been read from file.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return hashMap;
+    }
+    private static Object parseValue(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            try {
+                return Double.parseDouble(value);
+            } catch (NumberFormatException ex) {
+                return value;
+            }
+        }
     }
 }

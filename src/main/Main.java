@@ -11,6 +11,8 @@ import java.net.InetSocketAddress;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Main {
     public static Map<String , Object> config;
@@ -57,6 +59,7 @@ public class Main {
                                      outputStream.write(response.getBytes());
                                      outputStream.close();
                                  }catch (Exception exception) {
+                                     //exception.printStackTrace();
                                      String response = exception.getMessage();
                                      exchange.sendResponseHeaders(500, response.length());
                                      OutputStream outputStream = exchange.getResponseBody();
@@ -90,6 +93,7 @@ public class Main {
             };
 
             // 将处理请求的HttpHandler与指定的路径关联
+            server.setExecutor(createExecutorService());
             server.createContext("/", handler);
 
             // 启动服务器
@@ -97,7 +101,7 @@ public class Main {
 
             System.out.println("Server started on port 8000");
         }catch (Exception exception) {
-            exception.printStackTrace();
+            //exception.printStackTrace();
             System.out.println(exception.getMessage());
             System.exit(1);
         }
@@ -135,6 +139,10 @@ public class Main {
         return hashMap;
     }
 
+    private static ExecutorService createExecutorService() {
+        int numThreads = Runtime.getRuntime().availableProcessors(); // 使用可用的处理器核心数作为线程池大小
+        return Executors.newFixedThreadPool(numThreads);
+    }
     // 解析值的数据类型
     private static Object parseValue(String value) {
         try {
