@@ -54,3 +54,17 @@ Software CPU: 5%
 ```
 
 > Java HashMap对象写入或者读取文件，对HashMap对象进行读取和写入，读取效率快而且准确率高
+
+### 文档
+> 提供中文文档
+> https://gitee.com/LinWin-Cloud/metalite-server/wikis
+
+### 合作伙伴
+> LinWin-Cloud
+> zmh-program
+
+### 关注
+> B站: https://space.bilibili.com/1012391123
+> OSCHINA: https://my.oschina.net/LinWinCloud
+> Github: https://github.com/LinWin-Cloud/
+> Gitee: https://github.com/LinWin-Cloud/
