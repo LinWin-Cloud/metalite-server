@@ -99,7 +99,7 @@ public class Main {
             // 启动服务器
             server.start();
 
-            System.out.println("Server started on port 8000");
+            System.out.println("Server started on port "+String.valueOf(config.get("port")));
         }catch (Exception exception) {
             //exception.printStackTrace();
             System.out.println(exception.getMessage());
