@@ -48,7 +48,7 @@ Software CPU: 5%
 ```
 用户|
     | 数据库1 |-| 数据1-| Key1 - Value1
-    |         |         | Key2 - Value2	
+    |         |-|       | Key2 - Value2	
     | 数据库2 |-| 数据2
 
 ```
