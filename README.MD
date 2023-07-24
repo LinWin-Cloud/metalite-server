@@ -15,6 +15,34 @@ MetaLite Server数据库是基于Java开发的数据库软件，具有轻量，�
 设计运行Jdk:		oracle-jdk1.8
 ```
 
+### 安装
+不提供专门的安装脚本了，这个演示的是在Linux上
+> git clone https://github.com/LinWin-Cloud/metalite-server
+
+> cp -r metalite-server /usr/
+
+> sudo echo '/usr/metalite-server/bin/metalite' > /bin/metalite
+
+> sudo chmod +x /bin/metalite
+
+> # 安装完成
+
+> metalite # 启动metalite server数据库
+
+### 配置
+配置文件在 {源代码目录}/config/service.jmap
+#### 默认配置
+```
+port=1145
+name=metalite/1.7
+host=127.0.0.1
+```
+> port		启动端口
+
+> name		配置名称
+
+> host		绑定IP
+
 ### 性能指标
 1. 纯HTTP服务指标
 测试采用 4GB内存2核 Ubuntu 服务器测试，SSD硬盘
