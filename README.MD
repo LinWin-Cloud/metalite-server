@@ -2,6 +2,19 @@
 
 MetaLite Server数据库是基于Java开发的数据库软件，具有轻量，快捷部署，效率高，配置低，文件系统合理，抗网络负载强大的特点。由LinwinCloud个人独立开发完成
 
+```
+名称: 		MetaLite Server Database
+语言:	 	Java
+所用服务形式:	异步IO
+所用协议:	HTTP/2
+开发者:		LinwinCloud
+协议:		GPL-3
+支持平台: 	Linux , Windows
+最低配置:	1核1GB内存云服务器
+设计运行环境:	1核2GB内置云服务器
+设计运行Jdk:	oracle-jdk1.8
+```
+
 ### 性能指标
 1. 纯HTTP服务指标
 ```
