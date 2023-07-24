@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="metalite-server:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/metalite_server_jar</output-path>
+    <root id="archive" name="metalite-server.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/release/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="metalite-server" />
+    </root>
+  </artifact>
+</component>
