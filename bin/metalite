@@ -1,0 +1,3 @@
+
+script_dir=$(cd $(dirname $0);pwd)
+java -jar $script_dir/../release/metalite-server.jar
