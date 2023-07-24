@@ -36,6 +36,8 @@ public class Main {
                 @Override
                 public void handle(HttpExchange exchange) throws IOException {
                     // 处理请求
+                    exchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
+                    exchange.getResponseHeaders().set("Access-Control-Allow-Headers","*");
 
                     String getRequestsUrl = java.net.URLDecoder.decode(exchange.getRequestURI().toString() , "UTF-8");
                     String[] token = getRequestsUrl.split("/");
