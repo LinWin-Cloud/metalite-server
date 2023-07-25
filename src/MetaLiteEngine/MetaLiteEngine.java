@@ -171,7 +171,7 @@ public class MetaLiteEngine {
     }
 
     // 从文件中读取HashMap
-    public Map<String, Object> readHashMapFromFile(String filename) throws Exception {
+    public synchronized Map<String, Object> readHashMapFromFile(String filename) throws Exception {
         Map<String, Object> hashMap = new HashMap<>();
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
             hashMap = (Map<String, Object>) inputStream.readObject();
@@ -202,7 +202,7 @@ public class MetaLiteEngine {
         return size;
     }
 
-    private static Map<String, Object> readJMap(String filename) {
+    private synchronized static Map<String, Object> readJMap(String filename) {
         Map<String, Object> hashMap = new HashMap<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;

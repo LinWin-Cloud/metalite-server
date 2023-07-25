@@ -32,13 +32,14 @@ public class Main {
             HttpServer server = HttpServer.create(new InetSocketAddress(String.valueOf(config.get("host")), port ), 0);
 
             // 创建处理请求的HttpHandler
+            String server_name = String.valueOf(config.get("name"));
             HttpHandler handler = new HttpHandler() {
                 @Override
                 public void handle(HttpExchange exchange) throws IOException {
                     // 处理请求
                     exchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
                     exchange.getResponseHeaders().set("Access-Control-Allow-Headers","*");
-                    exchange.getResponseHeaders().set("Server",String.valueOf(config.get("name")));
+                    exchange.getResponseHeaders().set("Server",server_name);
 
                     String getRequestsUrl = java.net.URLDecoder.decode(exchange.getRequestURI().toString() , "UTF-8");
                     String[] token = getRequestsUrl.split("/");
@@ -86,6 +87,9 @@ public class Main {
                         }
 
                     }catch (Exception exception) {
+                        if (exception.getMessage() == null) {
+                            return;
+                        }
                         String response = "client message error";
                         exchange.sendResponseHeaders(400, response.length());
                         OutputStream outputStream = exchange.getResponseBody();
