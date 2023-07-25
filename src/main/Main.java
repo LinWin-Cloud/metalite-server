@@ -38,6 +38,7 @@ public class Main {
                     // 处理请求
                     exchange.getResponseHeaders().set("Access-Control-Allow-Origin","*");
                     exchange.getResponseHeaders().set("Access-Control-Allow-Headers","*");
+                    exchange.getResponseHeaders().set("Server",String.valueOf(config.get("name")));
 
                     String getRequestsUrl = java.net.URLDecoder.decode(exchange.getRequestURI().toString() , "UTF-8");
                     String[] token = getRequestsUrl.split("/");
