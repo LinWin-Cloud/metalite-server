@@ -8,7 +8,10 @@ import com.sun.net.httpserver.HttpHandler;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,16 +63,17 @@ public class Main {
                                      File f = new File(metaLiteEngine.select_dir+"/"+commands);
                                      if (!metaLiteEngine.getLastName(f.getName()).equals(".mdb") && f.isFile()) {
                                          exchange.sendResponseHeaders(200 , f.length());
-                                         InputStream inputStream = Files.newInputStream(f.toPath());
-                                         int length = -1;
-                                         byte[] bytes = new byte[1024];
+
                                          OutputStream outputStream = exchange.getResponseBody();
-                                         while ((length = inputStream.read(bytes)) != -1) {
-                                             outputStream.write(bytes);
+                                         InputStream inputStream = new FileInputStream(f);
+                                         int length = 0;
+                                         byte[] bytes = new byte[1024];
+                                         while ((length = inputStream.read(bytes)) != -1)
+                                         {
+                                             outputStream.write(bytes , 0 , length);
                                              outputStream.flush();
                                          }
                                          outputStream.close();
-                                         inputStream.close();
                                          return;
                                      }
 
