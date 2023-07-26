@@ -24,6 +24,7 @@ public class MetaLiteEngine {
     }
     public void exec(String code) throws Exception {
         code = code.trim();
+
         String[] token = code.split(" ");
 
         if (code.isEmpty()) {
