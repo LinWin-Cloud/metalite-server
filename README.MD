@@ -17,6 +17,10 @@ MetaLite Server数据库是基于Java开发的数据库软件，具有轻量，�
 
 ### 安装
 不提供专门的安装脚本了，这个演示的是在Linux上
+```
+# 预先安装Jdk，这个不演示了
+```
+
 > git clone https://github.com/LinWin-Cloud/metalite-server
 
 > cp -r metalite-server /usr/
